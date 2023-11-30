@@ -12,10 +12,17 @@ app.use(express.json());
 app.use(cors());
 
 const mongoUrl = process.env.MONGODB_URL;
-mongoose.connect(mongoUrl, err => {
-  if (err) throw err;
-  console.log("Mongodb connected...");
-});
+// mongoose.connect(mongoUrl,{ useNewUrlParser: true, useUnifiedTopology: true }, err => {
+//   if (err) throw err;
+//   console.log("Mongodb connected...");
+// });
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("MongoDB connected...");
+  })
+  .catch(err => {
+    console.error("Error connecting to MongoDB:", err);
+  });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
